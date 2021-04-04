@@ -8,8 +8,8 @@ const client = new faunadb.Client({
 
 exports.handler = async (event, context) => {
   console.log('Function `todo-read-all` invoked')
-  return client.query(q.Paginate(q.Match(q.Ref('indexes/all_todos'))))
-    .then((response) => {
+  return await client.query(q.Paginate(q.Match(q.Ref('indexes/all_todos'))))
+    .then( async (response) => {
       const todoRefs = response.data
       console.log('Todo refs', todoRefs)
       console.log(`${todoRefs.length} todos found`)
