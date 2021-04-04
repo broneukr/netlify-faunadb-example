@@ -18,7 +18,7 @@ exports.handler = async (event, context) => {
       })
       // then query the refs
       return await client.query(getAllTodoDataQuery).then((ret) => {
- ret = ret.map(el=>el=el.ref["@ref"])
+// ret = ret.map(el=>el=el.ref["@ref"])
         console.log(ret)
         return {
           statusCode: 200,
