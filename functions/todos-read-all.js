@@ -1,14 +1,13 @@
 /* Import faunaDB sdk */
 const faunadb = require('faunadb')
-const q = faunadb.query
 
+const q = faunadb.query
+const client = new faunadb.Client({
+  secret: process.env.FAUNADB_SERVER_SECRET
+})
 
 exports.handler = (event, context) => {
   console.log('Function `todo-read-all` invoked')
-  /* configure faunaDB Client with our secret */
-  const client = new faunadb.Client({
-    secret: process.env.FAUNADB_SERVER_SECRET
-  }) 
   return client.query(q.Paginate(q.Match(q.Ref('indexes/all_todos'))))
     .then((response) => {
       const todoRefs = response.data
@@ -19,7 +18,8 @@ exports.handler = (event, context) => {
         return q.Get(ref)
       })
       // then query the refs
-      return client.query(getAllTodoDataQuery).then(ret => ret).catch((error) => {
+      return client.query(getAllTodoDataQuery).then(ret => ret)
+    }).catch((error) => {
       console.log('error', error)
       return {
         statusCode: 400,
