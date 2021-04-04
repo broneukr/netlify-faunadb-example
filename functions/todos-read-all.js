@@ -6,7 +6,7 @@ const client = new faunadb.Client({
   secret: process.env.FAUNADB_SERVER_SECRET
 })
 
-exports.handler = (event, context) => {
+exports.handler = async (event, context) => {
   console.log('Function `todo-read-all` invoked')
   return client.query(q.Paginate(q.Match(q.Ref('indexes/all_todos'))))
     .then((response) => {
@@ -18,7 +18,12 @@ exports.handler = (event, context) => {
         return q.Get(ref)
       })
       // then query the refs
-      return client.query(getAllTodoDataQuery).then(ret => ret)
+      var x = await client.query(getAllTodoDataQuery).then((ret) => {
+        return {
+          statusCode: 200,
+          body: JSON.stringify(ret)
+        }
+      })
     }).catch((error) => {
       console.log('error', error)
       return {
@@ -26,4 +31,5 @@ exports.handler = (event, context) => {
         body: JSON.stringify(error)
       }
     })
+    return await x
 }
