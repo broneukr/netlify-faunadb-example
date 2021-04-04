@@ -18,7 +18,7 @@ exports.handler = async (event, context) => {
         return q.Get(ref)
       })
       // then query the refs
-      var x = await client.query(getAllTodoDataQuery).then((ret) => {
+      return await client.query(getAllTodoDataQuery).then((ret) => {
         return {
           statusCode: 200,
           body: JSON.stringify(ret)
@@ -31,5 +31,5 @@ exports.handler = async (event, context) => {
         body: JSON.stringify(error)
       }
     })
-    return await x
+    
 }
