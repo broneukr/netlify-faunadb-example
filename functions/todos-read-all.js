@@ -19,13 +19,7 @@ exports.handler = (event, context) => {
         return q.Get(ref)
       })
       // then query the refs
-      return client.query(getAllTodoDataQuery).then((ret) => {
-        return {
-          statusCode: 200,
-          body: JSON.stringify(ret)
-        }
-      })
-    }).catch((error) => {
+      return client.query(getAllTodoDataQuery).then(ret => ret).catch((error) => {
       console.log('error', error)
       return {
         statusCode: 400,
